@@ -151,6 +151,20 @@ body{font-family:'DM Sans',sans-serif;background:#f7f5f1;color:#1a1a1a;min-heigh
   .r-sig{grid-template-columns:1fr;}
 }
 </style>
+<script>
+var nazCorrente = 'IT';
+function setNaz(naz) {
+  nazCorrente = naz;
+  var btnIt = document.getElementById('nat-it');
+  var btnStr = document.getElementById('nat-str');
+  var provRow = document.getElementById('prov-row');
+  var paeseRow = document.getElementById('paese-row');
+  if (btnIt) btnIt.className = 'nat-btn' + (naz === 'IT' ? ' active-it' : '');
+  if (btnStr) btnStr.className = 'nat-btn' + (naz === 'STR' ? ' active-str' : '');
+  if (provRow) provRow.style.display = naz === 'IT' ? '' : 'none';
+  if (paeseRow) paeseRow.style.display = naz === 'STR' ? '' : 'none';
+}
+</script>
 </head>
 <body>
 <div class="app">
@@ -629,7 +643,6 @@ renderRegistro();
 // =============================================
 // NAZIONALITÀ E SINFONIA FORM
 // =============================================
-let nazCorrente = 'IT';
 
 function setNaz(naz) {
   nazCorrente = naz;
@@ -723,6 +736,7 @@ async function salvaRigaSheets(entry) {
 
 function popolaMeseSelect() {
   const sel = document.getElementById('mese-sel');
+  if (!sel) return;
   sel.innerHTML = '';
   const now = new Date();
   // Ultimi 12 mesi
