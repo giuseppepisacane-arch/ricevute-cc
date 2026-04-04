@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="CC Ricevute">
+<title>CC Ricevute — Costiera Charme</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjMUMyRTRBIiByeD0iOCIvPjx0ZXh0IHg9IjMyIiB5PSI0NCIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMzYiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNDNDk3NEEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkNDPC90ZXh0Pjwvc3ZnPg==">
+
+<!-- SCRIPT INIZIALIZZAZIONE PRECOCE — prima dell'HTML -->
+<script>
+var nazCorrente = 'IT';
+function setNaz(naz) {
+  nazCorrente = naz;
+  var btnIt  = document.getElementById('nat-it');
+  var btnStr = document.getElementById('nat-str');
+  var provRow   = document.getElementById('prov-row');
+  var paeseRow  = document.getElementById('paese-row');
+  if (btnIt)    btnIt.className  = 'nat-btn' + (naz==='IT'  ? ' active-it'  : '');
+  if (btnStr)   btnStr.className = 'nat-btn' + (naz==='STR' ? ' active-str' : '');
+  if (provRow)  provRow.style.display  = naz==='IT'  ? '' : 'none';
+  if (paeseRow) paeseRow.style.display = naz==='STR' ? '' : 'none';
+}
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'DM Sans',sans-serif;background:#f7f5f1;color:#1a1a1a;min-height:100vh;}
+.app{max-width:860px;margin:0 auto;padding:1.25rem 1rem 3rem;}
+/* HEADER */
+.app-header{text-align:center;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid #e0dcd4;}
+.app-header p{font-size:13px;color:#6b6b6b;margin-top:5px;}
+/* PANEL */
+.panel{background:#fff;border:1px solid #e0dcd4;border-radius:12px;padding:1.1rem;margin-bottom:0.9rem;}
+.panel-sinfonia{background:#f0f6ff;border:1px solid #c0d8f5;border-radius:12px;padding:1.1rem;margin-bottom:0.9rem;}
+.panel-title{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:#6b6b6b;margin-bottom:0.9rem;}
+.panel-sinfonia .panel-title{color:#1a5fa8;}
+/* FORM */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.form-full{grid-column:1/-1;}
+.fg{display:flex;flex-direction:column;gap:5px;}
+.fg label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:#6b6b6b;}
+.fg input,.fg select{border:1px solid #e0dcd4;border-radius:8px;padding:11px;font-size:16px;font-family:'DM Sans',sans-serif;background:#fff;color:#1a1a1a;-webkit-appearance:none;width:100%;}
+.fg input:focus,.fg select:focus{outline:none;border-color:#c8921a;}
+.exemption-tag{display:inline-block;margin-top:4px;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:500;}
+.ex-m{background:#fff8e8;color:#c8921a;border:1px solid #f5c842;}
+.ex-s{background:#e3f0fb;color:#1a5fa8;border:1px solid #90caf9;}
+/* NAZ TOGGLE */
+.nat-toggle{display:flex;gap:8px;}
+.nat-btn{flex:1;padding:10px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;border:1.5px solid #e0dcd4;background:#fff;color:#6b6b6b;transition:all 0.15s;text-align:center;}
+.nat-btn.active-it{border-color:#1a5fa8;background:#e3f0fb;color:#1a5fa8;}
+.nat-btn.active-str{border-color:#c8921a;background:#fff8e8;color:#c8921a;}
+/* COUNTERS */
+.counters{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:0.9rem;}
+.counter{background:#f7f5f1;border-radius:10px;padding:12px 8px;text-align:center;}
+.counter-val{font-size:26px;font-weight:500;font-family:'Cormorant Garamond',serif;}
+.counter-val.gold{color:#c8921a;}
+.counter-lbl{font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:#6b6b6b;margin-top:2px;}
+/* BADGES */
+.num-badges{display:flex;gap:8px;margin-bottom:0.9rem;flex-wrap:wrap;}
+.num-badge{flex:1;min-width:200px;background:#f7f5f1;border-radius:8px;padding:10px 12px;}
+.num-badge-label{font-size:11px;color:#6b6b6b;margin-bottom:3px;}
+.num-badge-val{font-size:14px;font-weight:500;color:#c8921a;}
+.num-badge-sub{font-size:10px;color:#6b6b6b;margin-top:2px;}
+/* BUTTONS */
+.action-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:1rem;}
+.btn{padding:14px 18px;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;border:none;display:flex;align-items:center;justify-content:center;gap:7px;width:100%;transition:all 0.15s;}
+.btn-gold{background:#c8921a;color:#fff;}
+.btn-gold:active{background:#b07f12;}
+.btn-blue{background:#1a5fa8;color:#fff;}
+.btn-blue:active{background:#154e8c;}
+.btn-outline{background:transparent;color:#1a1a1a;border:1px solid #e0dcd4;}
+.btn:disabled{opacity:0.5;cursor:not-allowed;}
+/* SYNC STATUS */
+.sync-status{font-size:11px;padding:8px 14px;border-radius:8px;margin-bottom:0.75rem;text-align:center;}
+.sync-ok{background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;}
+.sync-err{background:#ffebee;color:#c62828;border:1px solid #ef9a9a;}
+.sync-loading{background:#fff8e1;color:#f57f17;border:1px solid #ffe082;}
+/* RECEIPT */
+.receipt-wrap{display:none;margin-top:1.25rem;}
+.receipt-wrap.visible{display:block;}
+.receipt{background:#fff;border:1px solid #e0dcd4;border-radius:12px;overflow:hidden;margin-bottom:1rem;}
+.r-copy-tag{font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:7px 16px;display:flex;align-items:center;gap:8px;}
+.r-copy-tag.client{background:#fff8e8;color:#c8921a;}
+.r-copy-tag.manager{background:#e3f0fb;color:#1a5fa8;}
+.r-copy-tag::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;}
+.r-head{padding:1rem 1.25rem;border-bottom:1px solid #e0dcd4;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;}
+.r-head-left h2{font-family:'Cormorant Garamond',serif;font-size:11px;font-weight:600;color:#6b6b6b;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;}
+.r-logo{max-height:44px;max-width:180px;object-fit:contain;}
+.r-head-right{text-align:right;}
+.num{font-size:16px;font-weight:500;font-family:'Cormorant Garamond',serif;color:#c8921a;margin-top:6px;}
+.dt{font-size:10px;color:#6b6b6b;margin-top:2px;}
+.cc-wordmark{display:flex;align-items:center;gap:7px;justify-content:flex-end;}
+.cc-initials{font-family:'Georgia',serif;font-size:24px;font-weight:700;color:#1C2E4A;line-height:1;}
+.cc-divider{width:1px;height:30px;background:#C4974A;}
+.cc-text{display:flex;flex-direction:column;text-align:right;}
+.cc-name{font-family:'Georgia',serif;font-size:9px;letter-spacing:2.5px;color:#1C2E4A;}
+.cc-coast{font-family:'Georgia',serif;font-size:7px;letter-spacing:2px;color:#C4974A;margin-top:2px;}
+.r-body{padding:0.9rem 1.25rem;}
+.r-table{width:100%;border-collapse:collapse;font-size:12px;}
+.r-table th{text-align:left;padding:5px;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:#6b6b6b;border-bottom:1px solid #e0dcd4;}
+.r-table td{padding:8px 5px;border-bottom:1px solid #e0dcd4;color:#1a1a1a;}
+.r-table td:last-child{text-align:right;}
+.r-table tr:last-child td{border-bottom:none;}
+.r-table .total-row td{font-weight:500;font-size:14px;border-top:1.5px solid #1a1a1a;border-bottom:none;padding-top:11px;color:#c8921a;}
+.r-table .total-row td:first-child{color:#1a1a1a;}
+.r-sig{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1.25rem;padding-top:1rem;border-top:1px solid #e0dcd4;}
+.r-sig-box{display:flex;flex-direction:column;gap:4px;}
+.sig-label{font-size:11px;color:#6b6b6b;}
+.sig-name{font-size:10px;color:#6b6b6b;margin-top:2px;}
+.sig-img-wrap{height:50px;display:flex;align-items:flex-end;}
+.sig-img{height:50px;max-width:130px;object-fit:contain;display:block;}
+.sig-line{border-bottom:1px solid #e0dcd4;margin-top:4px;}
+.sig-line-empty{border-bottom:1px solid #e0dcd4;height:50px;}
+.r-foot{padding:0.6rem 1.25rem;background:#f7f5f1;border-top:1px solid #e0dcd4;font-size:10px;color:#6b6b6b;}
+.btn-dl{width:100%;border-radius:10px;}
+.sep{height:1.25rem;}
+/* SINFONIA REGISTRO */
+.sinfonia-box{background:#fff;border:1.5px solid #1a5fa8;border-radius:12px;overflow:hidden;margin-bottom:2rem;}
+.sinfonia-header{background:#e3f0fb;padding:14px 16px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;}
+.sinfonia-title{font-size:14px;font-weight:600;color:#1a5fa8;}
+.sinfonia-sub{font-size:11px;color:#3a3a3a;margin-top:2px;}
+.mese-select{border:1px solid #1a5fa8;border-radius:7px;padding:7px 10px;font-size:13px;font-family:'DM Sans',sans-serif;color:#1a5fa8;background:#fff;-webkit-appearance:none;cursor:pointer;}
+/* TABS */
+.sin-tabs{display:flex;border-bottom:1px solid #e0dcd4;background:#f7f5f1;}
+.sin-tab{flex:1;padding:10px;font-size:12px;font-weight:500;cursor:pointer;text-align:center;color:#6b6b6b;border:none;background:none;font-family:'DM Sans',sans-serif;border-bottom:2px solid transparent;}
+.sin-tab.active{color:#1a5fa8;border-bottom-color:#1a5fa8;background:#fff;}
+.sin-pane{display:none;padding:12px 16px;}
+.sin-pane.active{display:block;}
+/* REGISTRO MENSILE */
+.registro-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:6px;font-size:12px;align-items:center;padding:8px 0;border-bottom:1px solid #e0dcd4;}
+.registro-row.header{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:#6b6b6b;border-bottom:2px solid #1C2E4A;padding-bottom:6px;}
+.registro-row.struttura-hdr{font-size:11px;font-weight:600;color:#1a5fa8;grid-column:1/-1;padding:8px 0 2px;border-bottom:none;}
+.registro-row.empty{color:#6b6b6b;font-style:italic;grid-column:1/-1;text-align:center;padding:16px 0;}
+.totale-card{background:#f7f5f1;border-radius:8px;padding:12px;border-left:3px solid #1a5fa8;margin-bottom:8px;}
+.totale-card-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:#6b6b6b;margin-bottom:6px;}
+.totale-row{display:flex;justify-content:space-between;font-size:12px;padding:2px 0;}
+.totale-row strong{color:#1C2E4A;}
+/* VISTA GIORNALIERA */
+.giorno-card{background:#fff;border:1px solid #e0dcd4;border-radius:8px;margin-bottom:8px;overflow:hidden;}
+.giorno-card-header{background:#f7f5f1;padding:8px 12px;font-size:11px;font-weight:600;color:#1C2E4A;display:flex;justify-content:space-between;}
+.giorno-card-body{padding:8px 12px;}
+.giorno-row{display:flex;justify-content:space-between;font-size:11px;padding:3px 0;border-bottom:1px solid #f0ede8;}
+.giorno-row:last-child{border-bottom:none;}
+.giorno-row .tipo{font-weight:500;}
+.tipo-arr{color:#2e7d32;}
+.tipo-part{color:#c62828;}
+.sin-actions{padding:12px 16px;display:flex;gap:10px;flex-wrap:wrap;border-top:1px solid #e0dcd4;}
+.btn-sin{background:#1a5fa8;color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:6px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.btn-sin-sec{background:#f7f5f1;color:#1a1a1a;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:500;border:1px solid #e0dcd4;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.sin-note{padding:0 16px 12px;font-size:11px;color:#6b6b6b;line-height:1.6;}
+.sin-help{border-top:1px solid #e0dcd4;}
+.sin-help summary{padding:10px 16px;font-size:12px;font-weight:500;color:#1a5fa8;cursor:pointer;list-style:none;}
+.sin-help summary::-webkit-details-marker{display:none;}
+.sin-help summary::before{content:'▶ ';}
+.sin-help[open] summary::before{content:'▼ ';}
+.sin-help-body{padding:0 16px 14px;}
+.sin-links{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.sin-links a{font-size:12px;color:#1a5fa8;text-decoration:none;}
+.sin-contacts{font-size:11px;color:#3a3a3a;display:flex;flex-direction:column;gap:4px;}
+/* TOAST */
+.copy-toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#1C2E4A;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:9999;}
+.copy-toast.show{opacity:1;}
+/* RESPONSIVE */
+@media(max-width:480px){
+  .form-grid{grid-template-columns:1fr;}
+  .form-full{grid-column:1;}
+  .counters{grid-template-columns:1fr 1fr;}
+  .action-row{grid-template-columns:1fr;}
+  .r-sig{grid-template-columns:1fr;}
+  .registro-row{grid-template-columns:2fr 1fr 1fr 1fr 1fr;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="app-header">
+    <div style="display:flex;justify-content:center;margin-bottom:8px;">
+      <svg width="280" height="56" viewBox="0 0 400 80" xmlns="http://www.w3.org/2000/svg">
+        <style>.cch{font-family:Georgia,serif;font-size:38px;font-weight:700;fill:#1C2E4A;}.ccb{font-family:Georgia,serif;font-size:11px;fill:#1C2E4A;letter-spacing:4px;}.ccs{font-family:Georgia,serif;font-size:8px;fill:#C4974A;letter-spacing:3px;}</style>
+        <text class="cch" x="10" y="52">CC</text>
+        <line x1="72" y1="15" x2="72" y2="65" stroke="#C4974A" stroke-width="1"/>
+        <text class="ccb" x="84" y="38">COSTIERA CHARME</text>
+        <text class="ccs" x="86" y="55">AMALFI COAST</text>
+      </svg>
+    </div>
+    <p>Ricevute Tassa di Soggiorno</p>
+  </div>
+
+  <!-- SYNC STATUS -->
+  <div id="sync-status" class="sync-status sync-loading">&#8635; Connessione a Google Sheets...</div>
+
+  <!-- BADGES NUMERAZIONE -->
+  <div class="num-badges">
+    <div class="num-badge">
+      <div class="num-badge-label">Prossima — Montammare</div>
+      <div class="num-badge-val" id="badge-m">MNT-???/2026</div>
+      <div class="num-badge-sub" id="badge-m-sub">caricamento...</div>
+    </div>
+    <div class="num-badge">
+      <div class="num-badge-label">Prossima — Sapore di Sale</div>
+      <div class="num-badge-val" id="badge-s">SDS-???/2026</div>
+      <div class="num-badge-sub" id="badge-s-sub">caricamento...</div>
+    </div>
+  </div>
+
+  <!-- FORM RICEVUTA -->
+  <div class="panel">
+    <div class="panel-title">Dati soggiorno</div>
+    <div class="form-grid">
+      <div class="fg form-full">
+        <label>Struttura</label>
+        <select id="property" onchange="onPropChange()">
+          <option value="m">Montammare &mdash; &euro;2,00/notte</option>
+          <option value="s">Sapore di Sale &mdash; &euro;2,50/notte</option>
+        </select>
+      </div>
+      <div class="fg form-full">
+        <label>Nome e cognome ospite</label>
+        <input type="text" id="guestName" placeholder="Es. Mario Rossi" oninput="calcSummary()" autocomplete="off"/>
+      </div>
+      <div class="fg"><label>Check-in</label><input type="date" id="checkin" oninput="calcSummary()"/></div>
+      <div class="fg"><label>Check-out</label><input type="date" id="checkout" oninput="calcSummary()"/></div>
+      <div class="fg"><label>Adulti soggetti</label><input type="number" id="adults" min="0" value="2" oninput="calcSummary()"/></div>
+      <div class="fg">
+        <label>Minori esenti</label>
+        <input type="number" id="children" min="0" value="0" oninput="calcSummary()"/>
+        <span class="exemption-tag ex-m" id="exemption-tag">Esenti sotto i 14 anni</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM SINFONIA -->
+  <div class="panel panel-sinfonia">
+    <div class="panel-title">📊 Dati per Sinfonia <span style="font-size:10px;font-weight:400;">(non appaiono nella ricevuta)</span></div>
+    <div class="form-grid">
+      <div class="fg form-full">
+        <label>Nazionalità ospite</label>
+        <div class="nat-toggle">
+          <button type="button" class="nat-btn active-it" id="nat-it" onclick="setNaz('IT')">🇮🇹 Italiano</button>
+          <button type="button" class="nat-btn" id="nat-str" onclick="setNaz('STR')">🌍 Straniero</button>
+        </div>
+      </div>
+      <div class="fg form-full" id="prov-row">
+        <label>Provincia di provenienza</label>
+        <select id="provenienza">
+          <option value="">— Seleziona —</option>
+          <option>Agrigento</option><option>Alessandria</option><option>Ancona</option><option>Aosta</option><option>Arezzo</option><option>Ascoli Piceno</option><option>Asti</option><option>Avellino</option><option>Bari</option><option>Barletta-Andria-Trani</option><option>Belluno</option><option>Benevento</option><option>Bergamo</option><option>Biella</option><option>Bologna</option><option>Bolzano</option><option>Brescia</option><option>Brindisi</option><option>Cagliari</option><option>Caltanissetta</option><option>Campobasso</option><option>Caserta</option><option>Catania</option><option>Catanzaro</option><option>Chieti</option><option>Como</option><option>Cosenza</option><option>Cremona</option><option>Crotone</option><option>Cuneo</option><option>Enna</option><option>Fermo</option><option>Ferrara</option><option>Firenze</option><option>Foggia</option><option>Forlì-Cesena</option><option>Frosinone</option><option>Genova</option><option>Gorizia</option><option>Grosseto</option><option>Imperia</option><option>Isernia</option><option>La Spezia</option><option>L'Aquila</option><option>Latina</option><option>Lecce</option><option>Lecco</option><option>Livorno</option><option>Lodi</option><option>Lucca</option><option>Macerata</option><option>Mantova</option><option>Massa-Carrara</option><option>Matera</option><option>Messina</option><option>Milano</option><option>Modena</option><option>Monza e Brianza</option><option>Napoli</option><option>Novara</option><option>Nuoro</option><option>Oristano</option><option>Padova</option><option>Palermo</option><option>Parma</option><option>Pavia</option><option>Perugia</option><option>Pesaro e Urbino</option><option>Pescara</option><option>Piacenza</option><option>Pisa</option><option>Pistoia</option><option>Pordenone</option><option>Potenza</option><option>Prato</option><option>Ragusa</option><option>Ravenna</option><option>Reggio Calabria</option><option>Reggio Emilia</option><option>Rieti</option><option>Rimini</option><option selected>Roma</option><option>Rovigo</option><option>Salerno</option><option>Sassari</option><option>Savona</option><option>Siena</option><option>Siracusa</option><option>Sondrio</option><option>Taranto</option><option>Teramo</option><option>Terni</option><option>Torino</option><option>Trapani</option><option>Trento</option><option>Treviso</option><option>Trieste</option><option>Udine</option><option>Varese</option><option>Venezia</option><option>Verbano-Cusio-Ossola</option><option>Vercelli</option><option>Verona</option><option>Vibo Valentia</option><option>Vicenza</option><option>Viterbo</option>
+        </select>
+      </div>
+      <div class="fg form-full" id="paese-row" style="display:none;">
+        <label>Paese di provenienza</label>
+        <input type="text" id="paese" placeholder="Es. Germania, Paesi Bassi..." autocomplete="off"/>
+      </div>
+      <div class="fg">
+        <label>Camere occupate</label>
+        <input type="number" id="camere" min="1" value="1"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- COUNTERS -->
+  <div class="counters">
+    <div class="counter"><div class="counter-val" id="s-nights">0</div><div class="counter-lbl">Notti</div></div>
+    <div class="counter"><div class="counter-val" id="s-adults">0</div><div class="counter-lbl">Ospiti</div></div>
+    <div class="counter"><div class="counter-val gold" id="s-total">&euro; 0,00</div><div class="counter-lbl">Totale</div></div>
+  </div>
+
+  <!-- ACTION BUTTONS -->
+  <div class="action-row">
+    <button class="btn btn-gold" id="btn-genera" onclick="generateReceipts()" disabled>&#10003; Genera ricevute</button>
+    <button class="btn btn-outline" onclick="clearAll()">&#8635; Nuova</button>
+  </div>
+
+  <!-- RICEVUTA CLIENTE -->
+  <div class="receipt-wrap" id="receipt-section">
+    <div class="receipt" id="receipt-client">
+      <div class="r-copy-tag client">Copia cliente</div>
+      <div class="r-head">
+        <div class="r-head-left">
+          <h2>Ricevuta tassa di soggiorno</h2>
+          <img id="rc-logo" class="r-logo" src="" alt=""/>
+        </div>
+        <div class="r-head-right">
+          <div class="cc-wordmark">
+            <div class="cc-text"><span class="cc-name">COSTIERA CHARME</span><span class="cc-coast">AMALFI COAST</span></div>
+            <div class="cc-divider"></div>
+            <div class="cc-initials">CC</div>
+          </div>
+          <div class="num" id="rc-num">&mdash;</div>
+          <div class="dt" id="rc-date">&mdash;</div>
+        </div>
+      </div>
+      <div class="r-body">
+        <table class="r-table">
+          <thead><tr><th>Descrizione</th><th>Dettaglio</th><th>Importo</th></tr></thead>
+          <tbody>
+            <tr><td>Ospite</td><td id="rc-guest">&mdash;</td><td></td></tr>
+            <tr><td>Periodo</td><td id="rc-period">&mdash;</td><td id="rc-nightscell">&mdash;</td></tr>
+            <tr><td>Adulti soggetti</td><td id="rc-adultsd">&mdash;</td><td id="rc-adultsa">&mdash;</td></tr>
+            <tr><td id="rc-exempt-label">Minori esenti</td><td id="rc-childd">&mdash;</td><td style="color:#6b6b6b;">&euro; 0,00</td></tr>
+            <tr><td>Tariffa p.p./notte</td><td id="rc-rate">&mdash;</td><td></td></tr>
+          </tbody>
+          <tfoot><tr class="total-row"><td>Totale tassa soggiorno</td><td></td><td id="rc-total">&euro; 0,00</td></tr></tfoot>
+        </table>
+        <div class="r-sig">
+          <div class="r-sig-box">
+            <span class="sig-label">Firma del gestore</span>
+            <div class="sig-img-wrap"><img class="sig-img" id="firma-rc" src="firma.png" alt="firma"/></div>
+            <div class="sig-line"></div>
+            <span class="sig-name">Costiera Charme</span>
+          </div>
+          <div class="r-sig-box">
+            <span class="sig-label">Firma ospite</span>
+            <div class="sig-line-empty"></div>
+            <span class="sig-name" id="rc-guestsig">&mdash;</span>
+          </div>
+        </div>
+      </div>
+      <div class="r-foot"><span id="rc-foot-note">Ricevuta pagamento tassa di soggiorno.</span></div>
+    </div>
+    <button class="btn btn-gold btn-dl" onclick="buildPDF('client')">&#8659; Scarica PDF &mdash; Copia cliente</button>
+    <div class="sep"></div>
+
+    <!-- RICEVUTA GESTORE -->
+    <div class="receipt" id="receipt-manager">
+      <div class="r-copy-tag manager">Copia gestore &mdash; da trattenere</div>
+      <div class="r-head">
+        <div class="r-head-left">
+          <h2>Ricevuta tassa di soggiorno &mdash; archivio</h2>
+          <img id="rm-logo" class="r-logo" src="" alt=""/>
+        </div>
+        <div class="r-head-right">
+          <div class="cc-wordmark">
+            <div class="cc-text"><span class="cc-name">COSTIERA CHARME</span><span class="cc-coast">AMALFI COAST</span></div>
+            <div class="cc-divider"></div>
+            <div class="cc-initials">CC</div>
+          </div>
+          <div class="num" id="rm-num">&mdash;</div>
+          <div class="dt" id="rm-date">&mdash;</div>
+        </div>
+      </div>
+      <div class="r-body">
+        <table class="r-table">
+          <thead><tr><th>Voce</th><th>Dettaglio</th><th>Importo</th></tr></thead>
+          <tbody>
+            <tr><td>Struttura</td><td id="rm-prop">&mdash;</td><td></td></tr>
+            <tr><td>Ospite</td><td id="rm-guest">&mdash;</td><td></td></tr>
+            <tr><td>Periodo / Notti</td><td id="rm-period">&mdash;</td><td id="rm-nights">&mdash;</td></tr>
+            <tr><td>Formula calcolo</td><td id="rm-formula">&mdash;</td><td id="rm-formulaamt">&mdash;</td></tr>
+          </tbody>
+          <tfoot><tr class="total-row"><td>Importo incassato</td><td></td><td id="rm-total">&euro; 0,00</td></tr></tfoot>
+        </table>
+        <div class="r-sig" style="grid-template-columns:1fr;">
+          <div class="r-sig-box">
+            <span class="sig-label">Firma del gestore</span>
+            <div class="sig-img-wrap"><img class="sig-img" id="firma-rm" src="firma.png" alt="firma"/></div>
+            <div class="sig-line"></div>
+            <span class="sig-name">Ricevuta N. <span id="rm-refnum">&mdash;</span></span>
+          </div>
+        </div>
+      </div>
+      <div class="r-foot"><span id="rm-foot-note">Documento interno &mdash; conservare per archivio.</span></div>
+    </div>
+    <button class="btn btn-blue btn-dl" onclick="buildPDF('manager')">&#8659; Scarica PDF &mdash; Copia gestore</button>
+  </div><!-- fine receipt-wrap -->
+
+</div><!-- fine app -->
+
+<!-- ===== REGISTRO SINFONIA ===== -->
+<div class="app" style="padding-top:0;">
+  <div class="sinfonia-box">
+
+    <div class="sinfonia-header">
+      <div>
+        <div class="sinfonia-title">📊 Registro Mensile &mdash; Sinfonia Turismo SMART</div>
+        <div class="sinfonia-sub">Riepilogo movimenti per la comunicazione mensile alla Regione Campania</div>
+      </div>
+      <select id="mese-sel" onchange="onMeseChange()" class="mese-select"></select>
+    </div>
+
+    <!-- TABS -->
+    <div class="sin-tabs">
+      <button class="sin-tab active" onclick="switchTab('riepilogo',this)">📋 Riepilogo mensile</button>
+      <button class="sin-tab" onclick="switchTab('giornaliero',this)">📅 Vista giornaliera</button>
+    </div>
+
+    <!-- TAB RIEPILOGO -->
+    <div class="sin-pane active" id="tab-riepilogo">
+      <div id="reg-strutture"></div>
+      <div id="reg-totali" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;"></div>
+    </div>
+
+    <!-- TAB GIORNALIERO -->
+    <div class="sin-pane" id="tab-giornaliero">
+      <p style="font-size:11px;color:#6b6b6b;margin-bottom:10px;">
+        Vista giorno per giorno da usare mentre inserisci su Sinfonia. Per ogni giorno trovi chi arriva e chi parte.
+      </p>
+      <div id="reg-giornaliero"></div>
+    </div>
+
+    <!-- AZIONI -->
+    <div class="sin-actions">
+      <a href="https://turismo.regione.campania.it/turismoweb/fe-portale-turismo/login" target="_blank" class="btn-sin">🔗 Apri Sinfonia</a>
+      <button class="btn-sin-sec" onclick="copiaRiepilogo()">📋 Copia riepilogo</button>
+    </div>
+
+    <!-- NOTE -->
+    <div class="sin-note">
+      <strong>CUSR:</strong> 15065011EXT0107 &nbsp;&middot;&nbsp;
+      Accesso via <strong>SPID / CIE / CNS</strong> &nbsp;&middot;&nbsp;
+      Inserimento: <strong>giornaliero</strong> per struttura (Italiani/Stranieri + camere)
+    </div>
+
+    <!-- GUIDE -->
+    <details class="sin-help">
+      <summary>Guide e contatti Regione Campania</summary>
+      <div class="sin-help-body">
+        <div class="sin-links">
+          <a href="https://regione.campania.it/assets/documents/mini-guida-accesso-alla-piattaforma-sinfonia-turismo-smart.pdf" target="_blank">📄 Guida Accesso alla Piattaforma</a>
+          <a href="https://regione.campania.it/assets/documents/mini-guida-gestione-della-capacita-ricettiva-piattaforma-sinfonia-turismo-smart.pdf" target="_blank">📄 Guida Capacità Ricettiva</a>
+          <a href="https://regione.campania.it/assets/documents/mini-guida-movimentazione-clienti-modello-c59-piattaforma-sinfonia-turismo-smart.pdf" target="_blank">📄 Guida Movimentazione Clienti (C/59)</a>
+        </div>
+        <div class="sin-contacts">
+          <div>📧 <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="86f5f3f6f6e9f4f2e9a8f5f2f4f3f2f2f3f4e3f4efe5e3f2f2eff0e3c6f4e3e1efe9e8e3a8e5e7ebf6e7e8efe7a8eff2">[email&#160;protected]</a></div>
+          <div>📞 081 7968539 &mdash; Lun/Mar/Gio 9:30-12:30 e 14:00-15:00</div>
+          <div>📞 081 8074033 &mdash; Lun-Ven 9:30-13:00</div>
+          <div>📞 0823 550028 &mdash; Lun-Ven 9:30-13:00</div>
+        </div>
+      </div>
+    </details>
+
+  </div>
+</div>
+
+<div class="copy-toast" id="copy-toast">&#10003; Copiato!</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+const {jsPDF} = window.jspdf;
+
+// ============================================================
+// CONFIG
+// ============================================================
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbycAd0MQbFZ-0m1jbkvU8sQIi-vb8goOaUHI9gX6a1tfpUxBaBBLyP7g1YICFwbSC4bEw/exec';
+const RATES    = {m:2.00, s:2.50};
+const NAMES    = {m:'Montammare Casa di Charme', s:'Sapore di Sale'};
+const PREFIXES = {m:'MNT', s:'SDS'};
+const EXEMPT_AGE = {m:14, s:10};
+const PROP_KEY = {m:'montammare', s:'sapore'};
+const MESI = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno',
+              'Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+
+let DATA = {};
+let counters = {m:0, s:0};
+let syncOK = false;
+
+// ============================================================
+// UTILITY
+// ============================================================
+function fmt(n){ return n.toFixed(2).replace('.',','); }
+function fmtDate(d){ if(!d) return '—'; var p=d.split('-'); return p[2]+'/'+p[1]+'/'+p[0]; }
+function dateFromStr(s){ return s ? new Date(s+'T12:00:00') : null; }
+function addDays(d,n){ var r=new Date(d); r.setDate(r.getDate()+n); return r; }
+function isoDate(d){ return d.toISOString().split('T')[0]; }
+
+function showToast(msg){
+  var t=document.getElementById('copy-toast');
+  t.textContent = msg || '✓ Copiato!';
+  t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},2500);
+}
+
+// ============================================================
+// JSONP — per bypassare CORS con Google Apps Script
+// ============================================================
+function jsonp(url){
+  return new Promise(function(resolve,reject){
+    var cb='cb_'+Math.random().toString(36).substr(2,8);
+    var script=document.createElement('script');
+    var timer=setTimeout(function(){
+      delete window[cb];
+      if(script.parentNode) script.parentNode.removeChild(script);
+      reject(new Error('timeout'));
+    },10000);
+    window[cb]=function(data){
+      clearTimeout(timer);
+      delete window[cb];
+      if(script.parentNode) script.parentNode.removeChild(script);
+      resolve(data);
+    };
+    script.src=url+'&callback='+cb;
+    script.onerror=function(){
+      clearTimeout(timer);
+      delete window[cb];
+      if(script.parentNode) script.parentNode.removeChild(script);
+      reject(new Error('script error'));
+    };
+    document.body.appendChild(script);
+  });
+}
+
+// ============================================================
+// GOOGLE SHEETS — contatori + salvataggio
+// ============================================================
+function setSyncStatus(type,msg){
+  var el=document.getElementById('sync-status');
+  el.className='sync-status sync-'+type;
+  el.textContent=msg;
+}
+
+async function fetchCounter(p){
+  try{
+    var data=await jsonp(SCRIPT_URL+'?prop='+PROP_KEY[p]+'&action=read');
+    return parseInt(data.num)||0;
+  }catch(e){return null;}
+}
+
+async function incrementCounter(p){
+  try{
+    var data=await jsonp(SCRIPT_URL+'?prop='+PROP_KEY[p]+'&action=next');
+    return parseInt(data.num)||null;
+  }catch(e){return null;}
+}
+
+async function salvaRigaSheets(entry){
+  try{
+    var p=new URLSearchParams({
+      action:'salva', num:entry.num,
+      struttura:NAMES[entry.prop], ospite:entry.guest,
+      checkin:entry.ci, checkout:entry.co,
+      notti:entry.nights, adulti:entry.adults, minori:entry.children,
+      naz:entry.naz==='STR'?'Straniero':'Italiano',
+      provenienza:entry.provenienza, camere:entry.camere,
+      totale:entry.total
+    });
+    await jsonp(SCRIPT_URL+'?'+p.toString());
+    console.log('✓ Salvato su Sheets:', entry.num);
+  }catch(e){
+    console.warn('Salvataggio Sheets non riuscito (dato salvato in locale):', e.message);
+  }
+}
+
+async function loadCounters(){
+  setSyncStatus('loading','⟳ Connessione a Google Sheets...');
+  var m=await fetchCounter('m');
+  var s=await fetchCounter('s');
+  if(m===null||s===null){
+    setSyncStatus('err','⚠ Impossibile connettersi a Google Sheets. Ricarica la pagina.');
+    syncOK=false;
+    document.getElementById('btn-genera').disabled=true;
+    document.getElementById('badge-m').textContent='MNT-???';
+    document.getElementById('badge-s').textContent='SDS-???';
+    document.getElementById('badge-m-sub').textContent='offline';
+    document.getElementById('badge-s-sub').textContent='offline';
+    return;
+  }
+  counters.m=m; counters.s=s;
+  syncOK=true;
+  setSyncStatus('ok','✓ Connesso a Google Sheets — numerazione sincronizzata');
+  updateBadges();
+  document.getElementById('btn-genera').disabled=false;
+}
+
+function updateBadges(){
+  var yr=new Date().getFullYear();
+  ['m','s'].forEach(function(p){
+    var n=counters[p];
+    var pref=PREFIXES[p];
+    document.getElementById('badge-'+p).textContent=pref+'-'+String(n+1).padStart(3,'0')+'/'+yr;
+    document.getElementById('badge-'+p+'-sub').textContent=n>0?'Ultima: '+pref+'-'+String(n).padStart(3,'0')+'/'+yr:'Nessuna emessa';
+  });
+}
+
+// ============================================================
+// FORM RICEVUTA
+// ============================================================
+function onPropChange(){
+  var prop=document.getElementById('property').value;
+  var age=EXEMPT_AGE[prop];
+  var tag=document.getElementById('exemption-tag');
+  tag.textContent='Esenti sotto i '+age+' anni';
+  tag.className='exemption-tag '+(prop==='m'?'ex-m':'ex-s');
+  calcSummary();
+}
+
+function calcSummary(){
+  var prop=document.getElementById('property').value;
+  var ci=document.getElementById('checkin').value;
+  var co=document.getElementById('checkout').value;
+  var adults=parseInt(document.getElementById('adults').value)||0;
+  var nights=0;
+  if(ci&&co){var d1=new Date(ci),d2=new Date(co);nights=Math.max(0,Math.round((d2-d1)/86400000));}
+  var total=adults*RATES[prop]*nights;
+  document.getElementById('s-nights').textContent=nights;
+  document.getElementById('s-adults').textContent=adults;
+  document.getElementById('s-total').textContent='€ '+fmt(total);
+}
+
+async function generateReceipts(){
+  if(!syncOK){alert('Connessione a Google Sheets non disponibile. Ricarica la pagina.');return;}
+  var btn=document.getElementById('btn-genera');
+  btn.disabled=true; btn.textContent='⏳ Generazione...';
+
+  var prop=document.getElementById('property').value;
+  var guest=document.getElementById('guestName').value.trim()||'—';
+  var ci=document.getElementById('checkin').value;
+  var co=document.getElementById('checkout').value;
+  var adults=parseInt(document.getElementById('adults').value)||0;
+  var children=parseInt(document.getElementById('children').value)||0;
+  var rate=RATES[prop];
+  var age=EXEMPT_AGE[prop];
+  var nights=0;
+  if(ci&&co){var d1=new Date(ci),d2=new Date(co);nights=Math.max(0,Math.round((d2-d1)/86400000));}
+  var total=adults*rate*nights;
+  var period=(ci&&co)?fmtDate(ci)+' – '+fmtDate(co):'—';
+  var today=new Date().toLocaleDateString('it-IT');
+
+  var newNum=await incrementCounter(prop);
+  btn.disabled=false; btn.textContent='✓ Genera ricevute';
+  if(!newNum){alert('Errore incremento contatore Google Sheets. Riprova.');return;}
+
+  counters[prop]=newNum;
+  updateBadges();
+
+  var yr=new Date().getFullYear();
+  var num=PREFIXES[prop]+'-'+String(newNum).padStart(3,'0')+'/'+yr;
+
+  var naz=nazCorrente;
+  var provSel=document.getElementById('provenienza');
+  var provenienza=naz==='IT'
+    ?(provSel.value||'Non specificata')
+    :(document.getElementById('paese').value.trim()||'Non specificato');
+  var camere=parseInt(document.getElementById('camere').value)||1;
+
+  DATA={prop,guest,ci,co,adults,children,rate,age,nights,total,period,today,num,
+    propName:NAMES[prop],naz,provenienza,camere,
+    exemptLabel:prop==='m'?'Minori esenti (sotto i 14 anni)':'Bambini esenti (sotto i 10 anni)',
+    footNote:prop==='m'?'I minori di 14 anni sono esenti.':'I bambini sotto i 10 anni sono esenti.'
+  };
+
+  // Aggiorna preview
+  var logoSrc=prop==='m'?'logo_m.jpg':'logo_s.jpg';
+  ['rc','rm'].forEach(function(x){
+    document.getElementById(x+'-logo').src=logoSrc;
+    document.getElementById(x+'-num').textContent=num;
+    document.getElementById(x+'-date').textContent='Del '+today;
+  });
+  document.getElementById('rc-exempt-label').textContent=DATA.exemptLabel;
+  document.getElementById('rc-foot-note').textContent='Ricevuta pagamento tassa di soggiorno. '+DATA.footNote;
+  document.getElementById('rc-guest').textContent=guest;
+  document.getElementById('rc-period').textContent=period;
+  document.getElementById('rc-nightscell').textContent=nights+(nights===1?' notte':' notti');
+  document.getElementById('rc-adultsd').textContent=adults+(adults===1?' adulto':' adulti');
+  document.getElementById('rc-adultsa').textContent='€ '+fmt(adults*rate)+'/notte';
+  document.getElementById('rc-childd').textContent=children+(children===1?' minore':' minori')+' (sotto '+age+' anni)';
+  document.getElementById('rc-rate').textContent='€ '+fmt(rate)+' p.p./notte';
+  document.getElementById('rc-total').textContent='€ '+fmt(total);
+  document.getElementById('rc-guestsig').textContent=guest;
+  document.getElementById('rm-prop').textContent=NAMES[prop];
+  document.getElementById('rm-guest').textContent=guest;
+  document.getElementById('rm-period').textContent=period;
+  document.getElementById('rm-nights').textContent=nights+(nights===1?' notte':' notti');
+  document.getElementById('rm-formula').textContent=adults+' adulti × €'+fmt(rate)+' × '+nights+' notti';
+  document.getElementById('rm-formulaamt').textContent='€ '+fmt(total);
+  document.getElementById('rm-total').textContent='€ '+fmt(total);
+  document.getElementById('rm-refnum').textContent=num+' — '+today;
+  document.getElementById('receipt-section').classList.add('visible');
+  document.getElementById('receipt-section').scrollIntoView({behavior:'smooth',block:'start'});
+
+  // Salva ovunque
+  salvaRigaSheets(DATA);
+  salvaLocale(DATA);
+  setTimeout(function(){renderRegistro();}, 1500);
+}
+
+function clearAll(){
+  document.getElementById('guestName').value='';
+  document.getElementById('checkin').value='';
+  document.getElementById('checkout').value='';
+  document.getElementById('adults').value=2;
+  document.getElementById('children').value=0;
+  document.getElementById('camere').value=1;
+  document.getElementById('paese').value='';
+  setNaz('IT');
+  document.getElementById('receipt-section').classList.remove('visible');
+  DATA={};
+  calcSummary();
+}
+
+// ============================================================
+// PDF
+// ============================================================
+function buildPDF(type){
+  if(!DATA.num){alert('Genera prima la ricevuta!');return;}
+  var d=DATA;
+  var isClient=type==='client';
+  var doc=new jsPDF({unit:'mm',format:'a4',orientation:'portrait'});
+  var W=210,ml=15,mr=15,cw=W-ml-mr;
+  var y=15;
+  var GOLD=[200,146,26],NAVY=[28,46,74],MUTED=[107,107,107],LINE=[224,220,212],BGL=[247,245,241];
+
+  function hline(yy,c){doc.setDrawColor(...(c||LINE));doc.setLineWidth(0.3);doc.line(ml,yy,W-mr,yy);}
+  function hlineT(yy){doc.setDrawColor(...NAVY);doc.setLineWidth(0.6);doc.line(ml,yy,W-mr,yy);}
+  function fill(x,yy,w,h,c){doc.setFillColor(...c);doc.rect(x,yy,w,h,'F');}
+  function txt(t,x,yy,sz,bold,col,align){
+    doc.setFontSize(sz||10);doc.setFont('helvetica',bold?'bold':'normal');
+    doc.setTextColor(...(col||[26,26,26]));doc.text(String(t),x,yy,{align:align||'left'});
+  }
+
+  // Banda tipo
+  if(isClient){fill(0,0,W,8,[255,248,232]);}else{fill(0,0,W,8,[227,240,251]);}
+  txt(isClient?'COPIA CLIENTE':'COPIA GESTORE — DA TRATTENERE',ml+3,5.5,7,true,isClient?GOLD:[26,95,168]);
+  y=14;
+
+  // Logo struttura
+  try{var li=new Image();li.src=d.prop==='m'?'logo_m.jpg':'logo_s.jpg';doc.addImage(li,'JPEG',ml,y,45,18);}catch(e){}
+
+  // CC wordmark
+  var cx=W-mr;
+  txt('CC',cx-44,y+10,20,true,NAVY,'left');
+  doc.setDrawColor(...GOLD);doc.setLineWidth(0.4);doc.line(cx-20,y+2,cx-20,y+14);
+  txt('COSTIERA CHARME',cx-18,y+7,7,false,NAVY,'left');
+  txt('AMALFI COAST',cx-18,y+12,6,false,GOLD,'left');
+  txt(d.num,cx,y+20,11,true,GOLD,'right');
+  txt('Del '+d.today,cx,y+26,8,false,MUTED,'right');
+  y+=32;
+
+  hline(y);y+=6;
+  txt(isClient?'RICEVUTA TASSA DI SOGGIORNO':'RICEVUTA TASSA DI SOGGIORNO — ARCHIVIO',ml,y,8,false,MUTED);
+  y+=8;
+
+  // Intestazione tabella
+  fill(ml,y,cw,6,BGL);
+  txt('DESCRIZIONE',ml+2,y+4,7,true,MUTED);
+  txt('DETTAGLIO',ml+cw*0.55,y+4,7,true,MUTED);
+  txt('IMPORTO',W-mr-2,y+4,7,true,MUTED,'right');
+  y+=6;hline(y);
+
+  function row(label,detail,amount){
+    y+=1;txt(label,ml+2,y+4,9);txt(detail,ml+cw*0.55,y+4,9);
+    if(amount)txt(amount,W-mr-2,y+4,9,false,[26,26,26],'right');
+    y+=7;hline(y);
+  }
+
+  if(isClient){
+    row('Ospite',d.guest,'');
+    row('Periodo di soggiorno',d.period,d.nights+(d.nights===1?' notte':' notti'));
+    row('Adulti soggetti a tassa',d.adults+(d.adults===1?' adulto':' adulti'),'€ '+fmt(d.adults*d.rate)+'/notte');
+    row(d.exemptLabel,d.children+(d.children===1?' minore':' minori')+' (sotto '+d.age+' anni)','€ 0,00');
+    row('Tariffa pro capite/notte','','€ '+fmt(d.rate)+' p.p./notte');
+  }else{
+    row('Struttura',d.propName,'');
+    row('Ospite',d.guest,'');
+    row('Periodo / Notti',d.period,d.nights+(d.nights===1?' notte':' notti'));
+    row('Formula calcolo',d.adults+' adulti × €'+fmt(d.rate)+' × '+d.nights+' notti','€ '+fmt(d.total));
+  }
+
+  y+=2;hlineT(y);y+=2;
+  txt(isClient?'Totale tassa di soggiorno':'Importo incassato',ml+2,y+5,11,true,NAVY);
+  txt('€ '+fmt(d.total),W-mr-2,y+5,13,true,GOLD,'right');
+  y+=12;hline(y);y+=8;
+
+  if(isClient){
+    var c1=ml,c2=ml+cw/2+5,cW=cw/2-5;
+    txt('Firma del gestore',c1,y,8,false,MUTED);
+    txt('Firma ospite — per ricevuta',c2,y,8,false,MUTED);
+    y+=3;
+    try{var fe=new Image();fe.src='firma.png';doc.addImage(fe,'PNG',c1,y,35,18);}catch(e){}
+    y+=20;hline(y,[200,200,200]);
+    doc.setDrawColor(200,200,200);doc.setLineWidth(0.3);doc.line(c2,y,c2+cW,y);
+    y+=4;txt('Costiera Charme',c1,y,8,false,MUTED);txt(d.guest,c2,y,8,false,MUTED);
+  }else{
+    txt('Firma del gestore',ml,y,8,false,MUTED);y+=3;
+    try{var fe2=new Image();fe2.src='firma.png';doc.addImage(fe2,'PNG',ml,y,35,18);}catch(e){}
+    y+=20;hline(y,[200,200,200]);y+=4;
+    txt('Ricevuta N. '+d.num+' — '+d.today,ml,y,8,false,MUTED);
+  }
+
+  y+=10;fill(ml,y,cw,0.3,LINE);y+=4;
+  txt(d.footNote,ml,y,7,false,MUTED);
+  txt('Costiera Charme — Amalfi Coast',W-mr,y,7,false,MUTED,'right');
+
+  doc.save('TassaSoggiorno_'+d.num+'_'+(isClient?'cliente':'gestore')+'.pdf');
+}
+
+// ============================================================
+// REGISTRO LOCALE (localStorage)
+// ============================================================
+function getRegKey(anno,mese){return 'cc_reg_'+anno+'_'+mese;}
+
+function salvaLocale(data){
+  try{
+    var d=new Date(data.ci);
+    var key=getRegKey(d.getFullYear(),d.getMonth());
+    var reg=[];
+    var s=localStorage.getItem(key);
+    if(s) reg=JSON.parse(s);
+    reg.push({num:data.num,prop:data.prop,guest:data.guest,
+      ci:data.ci,co:data.co,nights:data.nights,
+      adults:data.adults,children:data.children,total:data.total,
+      naz:data.naz,provenienza:data.provenienza,camere:data.camere});
+    localStorage.setItem(key,JSON.stringify(reg));
+  }catch(e){}
+}
+
+function getRegistroMese(anno,mese){
+  try{var s=localStorage.getItem(getRegKey(anno,mese));return s?JSON.parse(s):[];}
+  catch(e){return [];}
+}
+
+async function getRegistroSheets(anno,mese){
+  // Legge il registro da Google Sheets (funziona su tutti i dispositivi)
+  var mm = String(mese+1).padStart(2,'0');
+  var meseFmt = mm+'/'+anno;
+  try{
+    var data = await jsonp(SCRIPT_URL+'?action=leggi&mese='+encodeURIComponent(meseFmt));
+    if(data.ok && data.righe) return data.righe;
+    return [];
+  }catch(e){
+    console.warn('Lettura Sheets fallita, uso localStorage:', e.message);
+    return getRegistroMese(anno,mese);
+  }
+}
+
+// ============================================================
+// TABS SINFONIA
+// ============================================================
+function switchTab(tab,el){
+  document.querySelectorAll('.sin-tab').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.sin-pane').forEach(function(p){p.classList.remove('active');});
+  el.classList.add('active');
+  document.getElementById('tab-'+tab).classList.add('active');
+  if(tab==='giornaliero') renderGiornaliero();
+  if(tab==='riepilogo') renderRegistro();
+}
+
+// ============================================================
+// SELEZIONE MESE
+// ============================================================
+function popolaMeseSelect(){
+  var sel=document.getElementById('mese-sel');
+  if(!sel) return;
+  sel.innerHTML='';
+  var now=new Date();
+  for(var i=0;i<12;i++){
+    var d=new Date(now.getFullYear(),now.getMonth()-i,1);
+    var opt=document.createElement('option');
+    opt.value=d.getFullYear()+'_'+d.getMonth();
+    opt.textContent=MESI[d.getMonth()]+' '+d.getFullYear();
+    sel.appendChild(opt);
+  }
+}
+
+function getMeseSel(){
+  var sel=document.getElementById('mese-sel');
+  if(!sel||!sel.value) return {anno:new Date().getFullYear(),mese:new Date().getMonth()};
+  var p=sel.value.split('_');
+  return {anno:parseInt(p[0]),mese:parseInt(p[1])};
+}
+
+function onMeseChange(){
+  renderRegistro();
+  // aggiorna tab giornaliero se aperto
+  if(document.getElementById('tab-giornaliero').classList.contains('active')) renderGiornaliero();
+}
+
+// ============================================================
+// RENDER RIEPILOGO MENSILE
+// ============================================================
+async function renderRegistro(){
+  var m=getMeseSel();
+  // Mostra loading
+  var strutEl=document.getElementById('reg-strutture');
+  var totEl=document.getElementById('reg-totali');
+  if(strutEl) strutEl.innerHTML='<div class="registro-row empty">⟳ Caricamento da Google Sheets...</div>';
+  if(totEl) totEl.innerHTML='';
+  var reg = await getRegistroSheets(m.anno,m.mese);
+  // Salva anche in localStorage come cache
+  try{localStorage.setItem(getRegKey(m.anno,m.mese),JSON.stringify(reg));}catch(e){}
+  var strutEl=document.getElementById('reg-strutture');
+  var totEl=document.getElementById('reg-totali');
+
+  if(reg.length===0){
+    strutEl.innerHTML='<div class="registro-row empty">Nessuna ricevuta registrata in questo mese.</div>';
+    totEl.innerHTML='';
+    return;
+  }
+
+  var nomi={m:'Montammare Casa di Charme',s:'Sapore di Sale'};
+  var html='',totali={};
+
+  ['m','s'].forEach(function(prop){
+    var righe=reg.filter(function(r){return r.prop===prop;});
+    if(!righe.length) return;
+    totali[prop]={arrivi:0,arriviIT:0,arriviSTR:0,presenze:0,camere:0,ricevute:0};
+    html+='<div class="registro-row struttura-hdr">🏠 '+nomi[prop]+'</div>';
+    html+='<div class="registro-row header"><span>Ospite / Provenienza</span><span>Check-in</span><span>Check-out</span><span>Notti</span><span>Presenze</span></div>';
+    righe.forEach(function(r){
+      var presenze=r.nights*(r.adults+r.children);
+      var persone=r.adults+r.children;
+      totali[prop].arrivi+=persone;
+      if(r.naz==='STR') totali[prop].arriviSTR+=persone;
+      else totali[prop].arriviIT+=persone;
+      totali[prop].presenze+=presenze;
+      totali[prop].camere+=(r.camere||1);
+      totali[prop].ricevute+=1;
+      // Le date da Sheets sono già GG/MM/AAAA, da localStorage sono YYYY-MM-DD
+      var ciDisp = r.ci.includes('-') ? fmtDate(r.ci) : r.ci;
+      var coDisp = r.co.includes('-') ? fmtDate(r.co) : r.co;
+      html+='<div class="registro-row">'+
+        '<span>'+r.guest+'<br><small style="color:#6b6b6b;">'+(r.naz==='STR'?'🌍':'🇮🇹')+' '+(r.provenienza||'—')+'</small></span>'+
+        '<span>'+ciDisp+'</span><span>'+coDisp+'</span>'+
+        '<span>'+r.nights+'</span><span>'+presenze+'</span></div>';
+    });
+  });
+  strutEl.innerHTML=html;
+
+  var totHtml='';
+  ['m','s'].forEach(function(prop){
+    if(!totali[prop]) return;
+    var t=totali[prop];
+    totHtml+='<div class="totale-card">'+
+      '<div class="totale-card-title">📊 '+nomi[prop]+'</div>'+
+      '<div class="totale-row"><span>Ricevute emesse</span><strong>'+t.ricevute+'</strong></div>'+
+      '<div class="totale-row"><span>🇮🇹 Arrivi italiani</span><strong>'+t.arriviIT+'</strong></div>'+
+      '<div class="totale-row"><span>🌍 Arrivi stranieri</span><strong>'+t.arriviSTR+'</strong></div>'+
+      '<div class="totale-row"><span>Presenze totali</span><strong>'+t.presenze+'</strong></div>'+
+      '<div class="totale-row"><span>Camere (somma mese)</span><strong>'+t.camere+'</strong></div>'+
+      '</div>';
+  });
+  totEl.innerHTML=totHtml;
+}
+
+// ============================================================
+// RENDER VISTA GIORNALIERA
+// ============================================================
+async function renderGiornaliero(){
+  var m=getMeseSel();
+  var el=document.getElementById('reg-giornaliero');
+  if(el) el.innerHTML='<div class="registro-row empty">⟳ Caricamento...</div>';
+  var reg = await getRegistroSheets(m.anno,m.mese);
+  var el=document.getElementById('reg-giornaliero');
+
+  if(reg.length===0){
+    el.innerHTML='<div class="registro-row empty">Nessuna ricevuta in questo mese.</div>';
+    return;
+  }
+
+  // Costruiamo mappa giorno → {arrivi:[], partenze:[]}
+  var giorni={};
+
+  reg.forEach(function(r){
+    // giorno di arrivo = ci
+    if(r.ci){
+      if(!giorni[r.ci]) giorni[r.ci]={arrivi:[],partenze:[]};
+      giorni[r.ci].arrivi.push(r);
+    }
+    // giorno di partenza = co
+    if(r.co){
+      if(!giorni[r.co]) giorni[r.co]={arrivi:[],partenze:[]};
+      giorni[r.co].partenze.push(r);
+    }
+  });
+
+  // Ordina le date
+  var dateOrd=Object.keys(giorni).sort();
+
+  // Raggruppa per struttura all'interno di ogni giorno
+  var nomi={m:'Montammare',s:'Sapore di Sale'};
+  var html='<p style="font-size:11px;color:#6b6b6b;margin-bottom:8px;">💡 Per ogni giorno: apri Sinfonia, seleziona la struttura, inserisci arrivi e partenze per provenienza + camere occupate.</p>';
+
+  dateOrd.forEach(function(data){
+    var g=giorni[data];
+    // Raggruppa per struttura
+    var strutture={m:{arrivi:[],partenze:[]},s:{arrivi:[],partenze:[]}};
+    g.arrivi.forEach(function(r){ strutture[r.prop].arrivi.push(r); });
+    g.partenze.forEach(function(r){ strutture[r.prop].partenze.push(r); });
+
+    ['m','s'].forEach(function(prop){
+      var st=strutture[prop];
+      if(!st.arrivi.length&&!st.partenze.length) return;
+
+      // Calcola camere occupate (chi è presente quella notte)
+      var camereOcc=0;
+      reg.forEach(function(r){
+        if(r.prop===prop && r.ci<=data && r.co>data) camereOcc+=(r.camere||1);
+      });
+
+      html+='<div class="giorno-card">';
+      html+='<div class="giorno-card-header">';
+      html+='<span>📅 '+fmtDate(data)+' &mdash; '+nomi[prop]+'</span>';
+      html+='<span style="color:#6b6b6b;font-weight:400;">🏠 '+camereOcc+' cam. occupate</span>';
+      html+='</div>';
+      html+='<div class="giorno-card-body">';
+
+      if(st.arrivi.length){
+        st.arrivi.forEach(function(r){
+          html+='<div class="giorno-row">'+
+            '<span class="tipo tipo-arr">▲ ARRIVO</span>'+
+            '<span>'+(r.naz==='STR'?'🌍':'🇮🇹')+' '+r.provenienza+'</span>'+
+            '<span>'+r.adults+' ad'+(r.children?'+'+r.children+'min':'')+' / '+(r.camere||1)+' cam.</span>'+
+            '<span>'+r.guest+'</span>'+
+            '</div>';
+        });
+      }
+      if(st.partenze.length){
+        st.partenze.forEach(function(r){
+          html+='<div class="giorno-row">'+
+            '<span class="tipo tipo-part">▼ PARTENZA</span>'+
+            '<span>'+(r.naz==='STR'?'🌍':'🇮🇹')+' '+r.provenienza+'</span>'+
+            '<span>'+r.adults+' ad'+(r.children?'+'+r.children+'min':'')+' / '+(r.camere||1)+' cam.</span>'+
+            '<span>'+r.guest+'</span>'+
+            '</div>';
+        });
+      }
+
+      html+='</div></div>';
+    });
+  });
+
+  el.innerHTML=html;
+}
+
+// ============================================================
+// COPIA RIEPILOGO
+// ============================================================
+async function copiaRiepilogo(){
+  var m=getMeseSel();
+  var reg=await getRegistroSheets(m.anno,m.mese);
+  if(!reg.length){alert('Nessuna ricevuta in questo mese.');return;}
+
+  var meseLabel=MESI[m.mese]+' '+m.anno;
+  var nomi={m:'Montammare Casa di Charme',s:'Sapore di Sale'};
+  var testo='REGISTRO MENSILE SINFONIA — '+meseLabel+'\nCUSR: 15065011EXT0107\n\n';
+
+  ['m','s'].forEach(function(prop){
+    var righe=reg.filter(function(r){return r.prop===prop;});
+    if(!righe.length) return;
+    var arrivi=0,presenze=0;
+    testo+='=== '+nomi[prop]+' ===\n';
+    righe.forEach(function(r){
+      var p=r.nights*(r.adults+r.children);
+      presenze+=p; arrivi+=(r.adults+r.children);
+      testo+=r.guest+' ('+(r.naz==='STR'?'🌍':'🇮🇹')+' '+(r.provenienza||'—')+') | '+
+        fmtDate(r.ci)+' → '+fmtDate(r.co)+' | '+r.nights+' notti | '+p+' presenze | '+(r.camere||1)+' cam.\n';
+    });
+    testo+='TOTALE: Arrivi '+arrivi+' — Presenze '+presenze+'\n\n';
+  });
+
+  navigator.clipboard.writeText(testo)
+    .then(function(){showToast('✓ Riepilogo copiato!');})
+    .catch(function(){alert(testo);});
+}
+
+// ============================================================
+// AVVIO
+// ============================================================
+onPropChange();
+calcSummary();
+popolaMeseSelect();
+renderRegistro();
+loadCounters();
+</script>
+</body>
+</html>
